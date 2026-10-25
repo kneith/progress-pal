@@ -1,0 +1,109 @@
+
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#101315"><meta name="description" content="Progress Pal — ruang belajar personal untuk jadwal, catatan, dan progres.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="./icon-512.jpeg?v=2" type="image/jpeg">
+<link rel="apple-touch-icon" href="./icon-512.jpeg">
+<link rel="stylesheet" href="style.css">
+<script src="accounts.js"></script>
+<title>Progress Pal • Your Progress, Your Pace</title>
+</head>
+<body>
+<div class="ambient a1"></div><div class="ambient a2"></div><div class="ambient a3"></div>
+<div class="app-shell">
+<header class="topbar glass">
+  <button class="icon-btn menu-toggle" id="menuToggle" aria-label="Buka navigasi">☰</button>
+  <div class="brand-mark" aria-label="Progress Pal">PP</div><div class="brand-copy"><b>Progress Pal</b><small>YOUR PROGRESS, YOUR PACE</small></div>
+  <div class="top-spacer"></div><div class="clock-chip"><span class="live-dot"></span><span id="clock">--:--:--</span><small id="dateLabel">Memuat tanggal…</small></div>
+  <button class="avatar" id="profileBtn" title="Ubah profil">A</button><button class="account-switch" id="switchAccountBtn" title="Ganti akun" aria-label="Ganti akun">⇄</button>
+</header>
+<div class="layout">
+<aside class="sidebar glass" id="sidebar">
+  <div class="profile-mini"><div class="avatar big" id="sideAvatar">A</div><div><b id="sideName">Pelajar</b><small id="sideClass">Pilih kelas</small></div><button class="subtle-btn" id="editProfile">✎</button></div>
+  <div class="nav-label">MENU UTAMA</div>
+  <nav class="nav">
+    <button class="nav-item active" data-view="dashboard"><span>▦</span> Dashboard</button>
+    <button class="nav-item" data-view="schedule"><span>▤</span> Jadwal pelajaran</button>
+    <button class="nav-item" data-view="notes"><span>✎</span> Catatan <i id="noteBadge">0</i></button>
+    <button class="nav-item" data-view="tasks"><span>☑</span> Daftar tugas</button>
+    <button class="nav-item" data-view="study"><span>◴</span> Progres belajar</button>
+    <button class="nav-item" data-view="stats"><span>▥</span> Statistik mingguan</button>
+    <button class="nav-item" data-view="exams"><span>⌛</span> Countdown ujian</button>
+    <button class="nav-item" data-view="backup"><span>⇅</span> Backup data</button>
+    <button class="nav-item" data-view="people"><span>⌕</span> Cari jadwal</button>
+  </nav>
+  <div class="side-bottom"><div class="mini-status"><span class="live-dot"></span><div><b>Live time</b><small>Jam perangkat diperbarui real-time</small></div></div><button class="outline-btn" id="notifyBtn">♧ Aktifkan notifikasi</button><button class="outline-btn" id="installBtn" hidden>＋ Pasang di HP</button></div>
+</aside>
+<main class="main">
+<section class="view active" id="view-dashboard">
+  <div class="welcome-row"><div><div class="eyebrow">RUANG BELAJAR PERSONAL • PROGRESS PAL</div><h1 id="welcome">Selamat datang 👋</h1><p class="muted">Satu ruang untuk mengatur jadwal, membangun kebiasaan, dan merayakan progres belajarmu.</p></div><button class="primary-btn" data-goto="schedule">Lihat jadwal <span>↗</span></button></div>
+  <div class="dashboard-grid">
+    <article class="glass panel progress-panel"><div class="panel-head"><div><div class="eyebrow">RINGKASAN BELAJAR</div><h2>Progress hari ini</h2></div><span class="pill green">● Live</span></div>
+      <div class="progress-main"><strong id="progressPercent">0%</strong><span><b id="doneCount">0</b> dari <b id="todayCount">0</b> blok selesai</span></div><div class="progress-track"><span id="progressBar"></span></div>
+      <div class="stat-row"><div><span class="stat-icon lime">✓</span><b id="statDone">0</b><small>Selesai</small></div><div><span class="stat-icon cyan">◷</span><b id="statUpcoming">0</b><small>Berikutnya</small></div><div><span class="stat-icon amber">✎</span><b id="statNotes">0</b><small>Catatan</small></div></div>
+    </article>
+    <article class="glass panel focus-panel"><div class="panel-head"><div><div class="eyebrow">SEKARANG</div><h2>Waktu & fokus</h2></div><span class="pulse"></span></div><div class="big-time" id="focusClock">--:--</div><div class="muted" id="focusDate">Memuat tanggal</div><div class="next-class" id="nextClass"><span class="next-symbol">✦</span><div><small>JADWAL BERIKUTNYA</small><b>Memuat jadwal…</b></div></div><button class="soft-btn full" data-goto="schedule">Buka kalender <span>→</span></button></article>
+    <article class="glass panel today-panel"><div class="panel-head"><div><div class="eyebrow">AGENDA</div><h2>Jadwal hari ini</h2></div><button class="text-btn" data-goto="schedule">Semua ↗</button></div><div id="todayList" class="agenda-list"></div></article>
+    <article class="glass panel reminder-panel"><div class="panel-head"><div><div class="eyebrow">JANGAN TERLEWAT</div><h2>Pengingat terdekat</h2></div><button class="text-btn" data-goto="notes">Lihat semua ↗</button></div><div id="reminderList" class="reminder-list"></div><div class="tip-card"><span>✧</span><div><b>Tip belajar</b><p>Tulis hal penting langsung dari blok mata pelajaran agar catatanmu mudah ditemukan.</p></div></div></article>
+  </div>
+</section>
+<section class="view" id="view-schedule">
+  <div class="section-heading"><div><div class="eyebrow">KALENDER AKADEMIK</div><h1>Jadwal pelajaran</h1><p class="muted">Ketuk blok pelajaran untuk melihat detail atau menambahkan catatan.</p></div><div class="head-actions"><select id="classSelect" aria-label="Pilih kelas"></select><button class="soft-btn" id="todayBtn">Hari ini</button></div></div>
+  <div class="glass schedule-toolbar"><div class="day-tabs" id="dayTabs"></div><div class="legend"><span><i class="legend-dot"></i> Mendatang</span><span><i class="legend-dot done-dot"></i> Selesai</span><span><i class="legend-dot break-dot"></i> Istirahat</span></div></div>
+  <div class="schedule-layout"><div class="glass schedule-card"><div class="schedule-card-head"><div><h2 id="scheduleDay">Senin</h2><small id="scheduleSub">Jadwal kelas</small></div><span class="pill" id="dayStatus">LIVE</span></div><div id="scheduleBlocks" class="schedule-blocks"></div></div><aside class="glass schedule-aside"><div class="eyebrow">INFO HARI INI</div><h2 id="scheduleClassTitle">Pilih kelas</h2><p class="muted">Jadwal mengikuti data resmi. Catatan dapat ditambahkan pada setiap blok.</p><div class="aside-metric"><span>Total blok</span><b id="dayBlockCount">0</b></div><div class="aside-metric"><span>Catatan mapel</span><b id="dayNoteCount">0</b></div><button class="primary-btn full" id="addGeneralNote">＋ Catatan umum</button></aside></div>
+</section>
+<section class="view" id="view-notes">
+  <div class="section-heading"><div><div class="eyebrow">CATATAN TERKAIT MAPEL</div><h1>Catatan belajar</h1><p class="muted">Catatan disimpan di perangkat ini dan bisa diberi pengingat.</p></div><button class="primary-btn" id="newNoteBtn">＋ Catatan baru</button></div>
+  <div class="notes-layout"><div class="glass panel"><div class="filter-row"><input id="noteSearch" placeholder="Cari catatan…" aria-label="Cari catatan"><select id="noteFilter"><option value="all">Semua catatan</option><option value="reminder">Ada pengingat</option><option value="general">Catatan umum</option></select></div><div id="notesList" class="notes-list"></div></div><div class="glass panel note-editor"><div class="eyebrow">EDITOR CATATAN</div><h2 id="editorTitle">Catatan baru</h2><form id="noteForm"><input id="noteId" type="hidden"><label>Judul<input id="noteTitle" required maxlength="90" placeholder="Contoh: Tugas Matematika"></label><label>Mata pelajaran<select id="noteSubject"></select></label><label>Kelas<select id="noteClass"></select></label><label>Isi catatan<textarea id="noteBody" rows="5" placeholder="Tulis materi, PR, atau hal penting…" required></textarea></label><div class="form-grid"><label>Tanggal pengingat<input type="date" id="noteDate"></label><label>Jam pengingat<input type="time" id="noteTime" value="07:00"></label></div><label>Ingatkan sebelumnya<select id="noteLead"><option value="0">Tepat pada tanggal</option><option value="1">H-1</option><option value="2">H-2</option><option value="3">H-3</option><option value="7">H-7</option><option value="14">H-14</option></select></label><div class="form-actions"><button type="button" class="soft-btn" id="clearNote">Bersihkan</button><button type="submit" class="primary-btn">Simpan catatan</button></div><p class="tiny muted">Notifikasi layar kunci memerlukan izin browser. Pengingat ketika aplikasi tertutup penuh memerlukan dukungan push/layanan server.</p></form></div></div>
+</section>
+<section class="view" id="view-tasks">
+ <div class="section-heading"><div><div class="eyebrow">LANGKAH KECIL, PROGRES BESAR</div><h1>Daftar tugas</h1><p class="muted">Atur prioritas dan tandai tugas yang sudah selesai.</p></div></div>
+ <div class="task-compose glass"><input id="taskInput" placeholder="Tulis tugas yang harus dikerjakan…" maxlength="160"><select id="taskPriority"><option value="normal">Normal</option><option value="high">Prioritas</option></select><input type="date" id="taskDue"><button class="primary-btn" id="addTask">Tambah ＋</button></div>
+ <div class="task-stats"><div class="glass panel"><small>Total tugas</small><b id="taskTotal">0</b></div><div class="glass panel"><small>Belum selesai</small><b id="taskOpen">0</b></div><div class="glass panel"><small>Selesai</small><b id="taskDone">0</b></div></div><div class="glass panel"><div class="panel-head"><h2>Semua tugas</h2><select id="taskFilter"><option value="open">Belum selesai</option><option value="all">Semua</option><option value="done">Selesai</option></select></div><div id="tasksList" class="tasks-list"></div></div>
+</section>
+<section class="view" id="view-study">
+ <div class="section-heading"><div><div class="eyebrow">KONSISTENSI LEBIH PENTING DARIPADA KESEMPURNAAN</div><h1>Progres belajar</h1><p class="muted">Catat waktu belajar, pantau target, dan bangun kebiasaan secara bertahap.</p></div></div>
+ <div class="study-grid">
+  <article class="glass panel quote-panel"><div class="eyebrow">A THOUGHT TO CARRY</div><div class="quote-mark">“</div><blockquote id="dailyQuote">Your next chapter begins with the effort you make today.</blockquote><p id="quoteAuthor" class="muted">— Progress Pal</p><button class="soft-btn" id="newQuoteBtn">Kutipan lainnya ↻</button><small class="tiny muted" id="quoteHistoryCount" aria-live="polite"></small></article>
+  <article class="glass panel vocab-panel"><div class="panel-head"><div><div class="eyebrow">WORD POWER · B2+</div><h2>Vocabulary of the day</h2></div><span class="pill green" id="vocabLevel">B2–C2</span></div><div class="vocab-word" id="vocabWord">meticulous</div><p class="muted" id="vocabPronunciation">/məˈtɪkjələs/ · adjective</p><p id="vocabMeaning">Sangat teliti dan memperhatikan detail.</p><div class="vocab-example" id="vocabExample">“She kept meticulous notes during the lecture.”</div><div class="pomodoro-controls"><button class="primary-btn" id="vocabRevealBtn">Lihat arti & contoh</button><button class="soft-btn" id="vocabNextBtn">Ganti kosakata ↻</button><button class="soft-btn" id="vocabKnowBtn">Sudah kupahami ✓</button></div><div class="panel-head vocab-history-head"><h3>Riwayat kosakata</h3><span class="pill" id="vocabHistoryCount">0 kata</span></div><div id="vocabHistory" class="vocab-history"></div><div class="panel-head vocab-history-head"><h3>20 kata hari ini</h3><span class="pill" id="dailyVocabCount">20 kata</span></div><div id="dailyVocabList" class="vocab-history"></div></article>
+  <article class="glass panel"><div class="panel-head"><div><div class="eyebrow">TARGET HARIAN</div><h2>Waktu belajar</h2></div><span class="pill green" id="studyGoalStatus">Mulai hari ini</span></div><div class="progress-main"><strong id="studyMinutes">0 mnt</strong><span>dari target <b id="studyGoalLabel">60 menit</b></span></div><div class="progress-track"><span id="studyGoalBar"></span></div><div class="form-grid"><label>Target per hari (menit)<input id="studyGoalInput" type="number" min="10" max="600" step="5" value="60"></label><label>Mapel sesi ini<select id="studySubject"><option value="Umum">Umum</option></select></label></div><button class="primary-btn full" id="saveStudyGoal">Simpan target</button></article>
+  <article class="glass panel"><div class="eyebrow">SESI FOKUS</div><h2>Pomodoro sederhana</h2><div class="pomodoro-clock" id="pomodoroClock">25:00</div><div class="pomodoro-controls"><button class="primary-btn" id="pomodoroStart">Mulai</button><button class="soft-btn" id="pomodoroPause">Jeda</button><button class="soft-btn" id="pomodoroReset">Atur ulang</button></div><div class="form-grid"><label>Durasi fokus (menit)<input id="focusDuration" type="number" min="5" max="120" value="25"></label><label>Istirahat (menit)<input id="breakDuration" type="number" min="1" max="30" value="5"></label></div><p class="tiny muted">Saat sesi fokus selesai, tandai sesi sebagai selesai untuk mencatat waktu belajar.</p></article>
+  <article class="glass panel"><div class="panel-head"><div><div class="eyebrow">RIWAYAT HARI INI</div><h2>Aktivitas belajar</h2></div><span class="pill" id="studySessionCount">0 sesi</span></div><div class="study-stats"><div><small>Total sesi</small><b id="allStudySessions">0</b></div><div><small>Streak hari</small><b id="studyStreak">0</b></div><div><small>Menit minggu ini</small><b id="weekStudyMinutes">0</b></div></div><div id="studyLog" class="study-log"></div><button class="soft-btn full" id="manualStudyBtn">＋ Catat sesi belajar</button></article>
+  <article class="glass panel"><div class="panel-head"><div><div class="eyebrow">KEBIASAAN BAIK</div><h2>Checklist harian</h2></div><span class="pill" id="habitCount">0/4</span></div><div id="habitList" class="habit-list"></div><p class="tiny muted">Checklist diatur ulang setiap hari dan tersimpan di perangkat ini.</p></article>
+  <article class="glass panel"><div class="panel-head"><div><div class="eyebrow">JANGAN TERLEWAT</div><h2>Pengingat pribadi</h2></div></div><form id="studyReminderForm" class="reminder-form"><label>Isi pengingat<input id="studyReminderText" maxlength="100" required placeholder="Contoh: Ulangi materi Biologi"></label><div class="form-grid"><label>Tanggal<input id="studyReminderDate" type="date" required></label><label>Waktu<input id="studyReminderTime" type="time" value="19:00" required></label></div><button class="primary-btn full" type="submit">Simpan pengingat</button></form><div id="studyReminderList" class="study-log"></div><button class="soft-btn full" id="studyNotifyBtn">Aktifkan notifikasi pengingat</button></article>
+  <article class="glass panel"><div class="panel-head"><div><div class="eyebrow">REFLEKSI HARIAN</div><h2>Bagaimana belajarmu hari ini?</h2></div></div><p class="muted">Catat suasana belajarmu dan satu hal yang ingin kamu tingkatkan.</p><form id="studyReflectionForm" class="reminder-form"><label>Suasana belajar<select id="studyMood"><option value="fokus">Fokus dan tenang</option><option value="semangat">Bersemangat</option><option value="biasa">Biasa saja</option><option value="lelah">Lelah, perlu istirahat</option><option value="tertantang">Menemui tantangan</option></select></label><label>Catatan refleksi<textarea id="studyReflectionText" rows="3" maxlength="400" placeholder="Apa yang berhasil hari ini? Apa langkah kecil berikutnya?"></textarea></label><button class="primary-btn full" type="submit">Simpan refleksi</button></form><div id="studyReflectionSaved" class="empty-state" aria-live="polite">Belum ada refleksi untuk hari ini.</div></article>
+ </div>
+</section>
+<section class="view" id="view-stats">
+ <div class="section-heading"><div><div class="eyebrow">REVIEW KONSISTENSI</div><h1>Statistik mingguan</h1><p class="muted">Ringkasan waktu belajar 7 hari terakhir berdasarkan sesi yang tersimpan di perangkat.</p></div><button class="soft-btn" id="refreshStats">↻ Perbarui</button></div>
+ <div class="task-stats"><div class="glass panel"><small>Total menit belajar</small><b id="weekMinutes">0</b></div><div class="glass panel"><small>Total sesi</small><b id="weekSessions">0</b></div><div class="glass panel"><small>Rata-rata per hari</small><b id="weekAverage">0 mnt</b></div></div>
+ <article class="glass panel"><div class="panel-head"><h2>Waktu belajar per hari</h2><span class="pill green">7 hari</span></div><div id="weeklyChart" class="weekly-chart" aria-label="Grafik waktu belajar mingguan"></div></article>
+</section>
+<section class="view" id="view-exams">
+ <div class="section-heading"><div><div class="eyebrow">PERSIAPAN TANPA PANIK</div><h1>Countdown ujian</h1><p class="muted">Simpan tanggal ujian dan lihat berapa hari lagi waktunya.</p></div></div>
+ <form id="examForm" class="task-compose glass"><input id="examName" required maxlength="100" placeholder="Nama ujian, mis. Ujian Matematika"><input id="examDate" type="date" required><button class="primary-btn" type="submit">Tambah ujian ＋</button></form><div id="examList" class="exam-list"></div>
+</section>
+<section class="view" id="view-backup">
+ <div class="section-heading"><div><div class="eyebrow">DATA TETAP DALAM KENDALIMU</div><h1>Backup & restore</h1><p class="muted">Ekspor data ke file JSON untuk cadangan, lalu impor file itu untuk memulihkan data.</p></div></div>
+ <article class="glass panel backup-panel"><div class="backup-icon">⇅</div><h2>Cadangkan data Progress Pal</h2><p class="muted">Mencakup data aplikasi yang tersimpan di localStorage pada browser ini. Simpan file di tempat aman. Impor akan mengganti data aplikasi yang cocok.</p><div class="form-actions"><button class="primary-btn" id="exportBackup">Unduh backup JSON</button><label class="soft-btn import-label" for="importBackupFile">Pilih file untuk restore</label><input id="importBackupFile" type="file" accept="application/json,.json" hidden></div><p id="backupStatus" class="tiny muted" aria-live="polite">Belum ada aktivitas backup.</p></article>
+</section>
+<section class="view" id="view-people">
+ <div class="section-heading"><div><div class="eyebrow">JADWAL PERSONAL</div><h1>Cari jadwal</h1><p class="muted">Lihat jadwal kelas lain atau telusuri jadwal berdasarkan guru.</p></div></div>
+ <div class="glass panel search-panel"><label>Cari nama guru atau mata pelajaran<input id="peopleSearch" placeholder="Contoh: SUCI, Matematika, BING…"></label><div class="form-grid"><label>Jenis pencarian<select id="peopleMode"><option value="teacher">Guru</option><option value="subject">Mata pelajaran</option><option value="class">Kelas</option></select></label><label>Kelas tertentu<select id="peopleClass"></select></label></div><div id="peopleResults" class="people-results"></div></div>
+</section>
+</main>
+</div>
+<nav class="mobile-nav glass" aria-label="Navigasi bawah">
+<button class="nav-item active" data-view="dashboard"><span>▦</span><small>Home</small></button><button class="nav-item" data-view="schedule"><span>▤</span><small>Jadwal</small></button><button class="nav-item" data-view="tasks"><span>☑</span><small>Tugas</small></button><button class="nav-item" data-view="study"><span>◴</span><small>Progres</small></button><button class="nav-item" id="mobileMoreBtn"><span>☰</span><small>Lainnya</small></button>
+</nav>
+</div>
+<div class="modal-backdrop" id="modalBackdrop"><div class="modal glass" role="dialog" aria-modal="true"><button class="modal-close" id="modalClose">×</button><div id="modalContent"></div></div></div>
+<div class="toast-wrap" id="toastWrap" aria-live="polite"></div>
+<div id="accountGate" class="account-gate" hidden><div class="account-card glass"><div class="brand-mark account-logo">PP</div><p class="eyebrow">YOUR PROGRESS, YOUR PACE</p><h1>Siapa yang belajar hari ini?</h1><p class="muted gate-intro">Pilih profilmu atau buat profil baru. Setiap profil menyimpan jadwal pilihan, tugas, catatan, dan progres secara terpisah di perangkat ini.</p><div id="accountList" class="account-list"></div><form id="newAccountForm" class="new-account-form"><label>Nama panggilan<input id="newAccountName" maxlength="40" required placeholder="Misalnya: Alex"></label><button class="primary-btn full" type="submit">＋ Buat akun lokal</button></form><p class="tiny muted gate-note">Akun ini bersifat lokal, bukan akun online yang dilindungi kata sandi. Siapa pun yang memakai perangkat ini dapat memilih profil lain.</p></div></div>
+<script src="accounts-ui.js"></script><script src="app.js"></script>
+<script src="features.js"></script>
+<script src="extras.js"></script>
+</body></html>
